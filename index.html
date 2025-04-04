@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traductor Braille-Español</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.1.1/tesseract.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            background-color: #eee;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            flex: 1;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        .tab:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+        .tab:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+        .tab.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+        #imagePreview, #brailleOutput {
+            max-width: 100%;
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px dashed #ccc;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #imagePreview img {
+            max-width: 100%;
+            max-height: 400px;
+        }
+        #brailleOutput {
+            font-size: 24px;
+            line-height: 1.5;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 10px 0;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-height: 100px;
+            resize: vertical;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .loading.active {
+            display: block;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #3498db;
+        }
+        .error {
+            color: #e74c3c;
+            text-align: center;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Traductor Braille-Español</h1>
+
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab(0)">Braille a Español</div>
+            <div class="tab" onclick="switchTab(1)">Español a Braille</div>
+        </div>
+
+        <div class="section active" id="brailleToSpanish">
+            <h2>Traducir imagen Braille a Español</h2>
+            <p>Sube una imagen con texto en braille para traducirla a español.</p>
+            <div class="result" id="translationResult">
+                <h3>Resultado de la traducción:</h3>
+                <p id="spanishOutput"></p>
+                <button id="readTranslationButton">🔊 Escuchar traducción</button>
+                <button id="stopReadingButton">⏹️ Detener lectura</button>
+            </div>
+            
+
+
+            <form id="uploadForm" enctype="multipart/form-data">
+                <input type="file" id="imageInput" name="image" accept="image/*">
+                <button id="translateButton" type="submit">Traducir imagen</button>
+            </form>
+
+            
+
+            <div id="imagePreview">
+                <p>La imagen aparecerá aquí</p>
+            </div>
+
+            <div class="loading" id="loadingIndicator">
+                <p>Procesando imagen, por favor espere...</p>
+                <div class="spinner"></div>
+            </div>
+
+
+        </div>
+
+        <div class="section" id="spanishToBraille">
+            <h2>Traducir Español a Braille</h2>
+            <p>Escribe texto en español para convertirlo a braille.</p>
+
+            <textarea id="spanishInput" placeholder="Escribe aquí tu texto en español..."></textarea>
+            <button id="convertToBrailleButton">Convertir a Braille</button>
+            <button id="detectarVoz">🎙️ Iniciar Dictado​</button>
+            <p id="estadoTexto"></ppython>
+
+            <div id="brailleOutput">
+                <p>El texto en braille aparecerá aquí</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
